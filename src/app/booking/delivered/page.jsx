@@ -2,7 +2,7 @@
 import React from "react";
 import purchases from "../../../../database/purchases.json";
 
-const OrderPage = () => {
+const DeliveredPage = () => {
   return (
     <div>
       <h2>Delivered data Page</h2>
@@ -50,4 +50,4 @@ const OrderPage = () => {
   );
 };
 
-export default OrderPage;
+export default DeliveredPage;

@@ -1,7 +1,7 @@
 // CardSearch.js
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import members from "../../../database/members.json";
 import purchases from "../../../database/purchases.json";

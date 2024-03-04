@@ -1,11 +1,13 @@
-'use client'
+"use client";
 import { useState, useEffect } from "react";
+import { ReactToPrint } from "react-to-print";
 import membersData from "../../../../database/members.json";
 import productsData from "../../../../database/products.json";
 
 export default function Page({ params }) {
   const [user, setUser] = useState(null);
   const [selectedArea, setSelectedArea] = useState("");
+  const [componentRef, setComponentRef] = useState(null);
 
   const getCurrentDate = () => {
     const date = new Date();
@@ -28,6 +30,7 @@ export default function Page({ params }) {
     const area = selectedArea;
     const packageType = "Mini"; // You may need to adjust this based on your requirements
 
+    console.log(`saveDataToApi ${saveDataToApi}`)
     const requestBody = {
       Invoice: invoice,
       Date: date,
@@ -72,44 +75,61 @@ export default function Page({ params }) {
   }, [user, selectedArea]);
 
   return (
-    <div className="md:flex md:justify-evenly p-6">
+    <div>
       <div>
-        {user ? (
+        <div
+          ref={(el) => setComponentRef(el)}
+          className="md:flex md:justify-evenly p-6"
+        >
           <div>
-            <p>Invoice: {`20242${user.Card.slice(9)}`} </p>
-            <p>Date:{getCurrentDate()}</p>
-            <p>Name: {user.Name}</p>
-            <p>Card Number: {user.Card}</p>
-            <p>Khundi: {user.Khundi}</p>
-            <div>
-              <label htmlFor="areaDropdown">Area:</label>
-              <select
-                id="areaDropdown"
-                value={selectedArea}
-                onChange={handleAreaChange}
-              >
-                <option value="">Select Area</option>
-                <option value="Hussainabad">Hussainabad</option>
-                <option value="Memon Society">Memon Society</option>
-                <option value="Mosamiyat">Mosamiyat</option>
-                <option value="Highway">Highway</option>
-              </select>
-            </div>
-            <p>Package: Mini</p>
+            {user ? (
+              <div>
+                <p>Invoice: {`20242${user.Card.slice(9)}`} </p>
+                <p>Date:{getCurrentDate()}</p>
+                <p>Name: {user.Name}</p>
+                <p>Card Number: {user.Card}</p>
+                <p>Khundi: {user.Khundi}</p>
+                <div>
+                  <label htmlFor="areaDropdown">Area:</label>
+                  <select
+                    id="areaDropdown"
+                    value={selectedArea}
+                    onChange={handleAreaChange}
+                  >
+                    <option value="">Select Area</option>
+                    <option value="Hussainabad">Hussainabad</option>
+                    <option value="Memon Society">Memon Society</option>
+                    <option value="Mosamiyat">Mosamiyat</option>
+                    <option value="Highway">Highway</option>
+                  </select>
+                </div>
+                <p>Package: Mini</p>
+              </div>
+            ) : (
+              <p>-</p>
+            )}
           </div>
-        ) : (
-          <p>-</p>
-        )}
+          <div>
+            <ul>
+              {productsData.map((product) => (
+                <li key={product["S.No"]}>
+                  {product["S.No"]} - <strong>{product["Item"]}</strong> -
+                  Quantity: {product["Qty"]}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-      <div>
-        <ul>
-          {productsData.map((product) => (
-            <li key={product["S.No"]}>
-              {product["S.No"]} - <strong>{product["Item"]}</strong> - Quantity:{" "}
-              {product["Qty"]}
-            </li>
-          ))}
-        </ul>
+      <div className="bg-blue-500 rounded-xl text-center p-5">
+        <ReactToPrint
+          trigger={() => {
+            return <button className="text-2xl font-bold">Print Bill</button>;
+          }}
+          content={() => componentRef}
+          documentTitle="OMJ RASHAN BILL"
+          pageStyle="print"
+        />
       </div>
     </div>
   );

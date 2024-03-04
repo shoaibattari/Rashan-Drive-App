@@ -60,12 +60,13 @@ const CardSearch = () => {
   };
 
   return (
-    <div>
+    <div className="text-3xl bg-gray-500  mt-6 ">
       <label>
         Enter Card Number:
         <input
           type="text"
           value={searchInput}
+          className="p-2 border rounded-lg mx-6" 
           onChange={(e) => setSearchInput(e.target.value)}
         />
       </label>

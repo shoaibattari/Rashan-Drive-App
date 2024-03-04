@@ -1,6 +1,6 @@
 // OrderPage.js
 import React from "react";
-import purchases from "../../../../database/purchases.json";
+import purchases from "../../../database/purchases.json";
 
 const DeliveredPage = () => {
   return (
